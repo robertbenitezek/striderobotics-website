@@ -4,74 +4,866 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Roboto Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-
     <title>Stride Robotics</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet"
+    >
+
     <style>
+        :root {
+            --background: #071b2f;
+            --background-light: #0b2742;
+            --background-card: rgba(255, 255, 255, 0.045);
+            --text-primary: #ffffff;
+            --text-secondary: #9db6d1;
+            --border: rgba(255, 255, 255, 0.09);
+            --accent: #ffffff;
+            --navbar-height: 80px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--navbar-height);
+        }
+
         body {
-            background-color: #071B2F;
-            color: white;
-            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 50% 15%,
+                    rgba(62, 122, 176, 0.14),
+                    transparent 36%
+                ),
+                var(--background);
+            color: var(--text-primary);
+            font-family: "Roboto", sans-serif;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        section {
+            scroll-margin-top: var(--navbar-height);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: var(--navbar-height);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 0 7%;
+
+            background: rgba(7, 27, 47, 0.9);
+            border-bottom: 1px solid var(--border);
+
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            position: relative;
+
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 400;
+            text-decoration: none;
+
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -9px;
+
+            width: 0;
+            height: 2px;
+
+            background: var(--accent);
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 100vh;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
-            height: 100vh;
+            padding: 140px 24px 80px;
             text-align: center;
         }
 
-        .container {
-            max-width: 900px;
-            padding: 20px;
+        .hero-content {
+            width: 100%;
+            max-width: 980px;
         }
 
-        h1 {
-            font-size: 5rem;
+        .eyebrow {
+            margin-bottom: 22px;
+
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            margin-bottom: 26px;
+
+            font-size: clamp(3.4rem, 8vw, 6.2rem);
             font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 28px;
+            line-height: 0.98;
+            letter-spacing: -0.045em;
         }
 
-        h2 {
-            font-size: 2rem;
+        .hero h2 {
+            max-width: 780px;
+            margin: 0 auto 24px;
+
+            font-size: clamp(1.65rem, 3.5vw, 2.6rem);
             font-weight: 400;
-            margin-bottom: 18px;
+            line-height: 1.25;
+        }
+
+        .hero p {
+            max-width: 790px;
+            margin: 0 auto;
+
+            color: var(--text-secondary);
+            font-size: clamp(1rem, 1.6vw, 1.18rem);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+
+            margin-top: 38px;
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            min-width: 160px;
+            padding: 14px 24px;
+
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 7px;
+
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+
+            transition:
+                transform 0.2s ease,
+                background-color 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button-primary {
+            background: white;
+            border-color: white;
+            color: var(--background);
+        }
+
+        .button-secondary {
+            background: transparent;
             color: white;
         }
 
-        p {
-            font-size: 1.1rem;
+        .button-secondary:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .content-section {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+
+            padding: 120px 7%;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-inner {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            max-width: 760px;
+            margin-bottom: 52px;
+        }
+
+        .section-heading h2 {
+            margin-bottom: 18px;
+
+            font-size: clamp(2.3rem, 5vw, 4rem);
+            line-height: 1.1;
+            letter-spacing: -0.035em;
+        }
+
+        .section-heading p {
+            color: var(--text-secondary);
+            font-size: 1.08rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .vision-card {
+            min-height: 240px;
+            padding: 30px;
+
+            background: var(--background-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+
+            transition:
+                transform 0.2s ease,
+                background-color 0.2s ease;
+        }
+
+        .vision-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.065);
+        }
+
+        .vision-number {
+            display: block;
+            margin-bottom: 42px;
+
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+        }
+
+        .vision-card h3 {
+            margin-bottom: 14px;
+            font-size: 1.25rem;
+        }
+
+        .vision-card p {
+            color: var(--text-secondary);
+            font-size: 0.96rem;
             font-weight: 300;
             line-height: 1.7;
-            color: #9EB1C8;
-            max-width: 700px;
-            margin: 0 auto;
+        }
+
+        .prototype-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        .prototype-copy,
+        .prototype-panel {
+            padding: 38px;
+
+            background: var(--background-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .prototype-label {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 7px 11px;
+
+            border: 1px solid var(--border);
+            border-radius: 999px;
+
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .prototype-copy h3 {
+            margin-bottom: 18px;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+        }
+
+        .prototype-copy p {
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .prototype-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .prototype-panel h3 {
+            margin-bottom: 24px;
+            font-size: 1.2rem;
+        }
+
+        .status-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .status-item:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+
+        .status-item span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .status-item span:last-child {
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .research-box {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 40px;
+            align-items: center;
+
+            padding: 48px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.07),
+                    rgba(255, 255, 255, 0.025)
+                );
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .research-box h3 {
+            margin-bottom: 14px;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+        }
+
+        .research-box p {
+            max-width: 760px;
+
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .about-layout {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .about-title {
+            font-size: clamp(2.3rem, 5vw, 4rem);
+            line-height: 1.1;
+            letter-spacing: -0.035em;
+        }
+
+        .about-copy p {
+            margin-bottom: 22px;
+
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            font-weight: 300;
+            line-height: 1.85;
+        }
+
+        .about-copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-section {
+            min-height: 70vh;
+            text-align: center;
+        }
+
+        .contact-section .section-heading {
+            margin: 0 auto 34px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+
+            padding: 28px 7%;
+
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 1000px) {
+            .vision-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .prototype-layout,
+            .about-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 850px) {
+            :root {
+                --navbar-height: 126px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 18px;
+
+                padding: 20px 24px;
+            }
+
+            .nav-links {
+                width: 100%;
+                gap: 22px;
+
+                overflow-x: auto;
+                padding-bottom: 8px;
+            }
+
+            .nav-links a {
+                white-space: nowrap;
+            }
+
+            .hero {
+                padding-top: 180px;
+            }
+
+            .research-box {
+                grid-template-columns: 1fr;
+            }
+
+            .research-box .button {
+                width: fit-content;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .hero h1 {
+                letter-spacing: -0.03em;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .button {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .content-section {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prototype-copy,
+            .prototype-panel,
+            .research-box {
+                padding: 28px;
+            }
+
+            .footer {
+                flex-direction: column;
+                padding-left: 24px;
+                padding-right: 24px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <nav class="navbar">
+        <a href="#home" class="nav-logo">Stride Robotics</a>
 
-<div class="container">
-    <h1>Stride Robotics</h1>
+        <div class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#vision">Vision</a>
+            <a href="#prototype">Prototype</a>
+            <a href="#research">Research</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
 
-    <h2>Engineering the future of hockey.</h2>
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <p class="eyebrow">Intelligent hockey training</p>
 
-    <p>
-        Developing intelligent systems that combine robotics, computer vision, wearable technology, and AI to help athletes train smarter, learn faster, and perform at their highest level.
-    </p>
-</div>
+                <h1>Stride Robotics</h1>
 
+                <h2>Engineering the future of hockey.</h2>
+
+                <p>
+                    We are exploring how robotics, computer vision, wearable
+                    technology and AI can help athletes train smarter, develop
+                    faster and better understand their game.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#vision" class="button button-primary">
+                        Explore the Vision
+                    </a>
+
+                    <a href="#research" class="button button-secondary">
+                        Share Your Experience
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="vision">
+            <div class="section-inner">
+                <div class="section-heading">
+                    <p class="eyebrow">Our vision</p>
+
+                    <h2>Intelligent systems for player development.</h2>
+
+                    <p>
+                        Stride is in the early stages of development, investigating emerging technologies that could
+                        make hockey training more responsive, measurable and cost-effective.
+                    </p>
+                </div>
+
+                <div class="vision-grid">
+                    <article class="vision-card">
+                        <span class="vision-number">01</span>
+
+                        <h3>Intelligent Robotics</h3>
+
+                        <p>
+                            Programmable, context-aware training aids that can
+                            create repeatable drills and simulate realistic
+                            pressure.
+                        </p>
+                    </article>
+
+                    <article class="vision-card">
+                        <span class="vision-number">02</span>
+
+                        <h3>Wearable Technology</h3>
+
+                        <p>
+                            Sensor-driven feedback for understanding skating,
+                            shooting and stickhandling mechanics.
+                        </p>
+                    </article>
+
+                    <article class="vision-card">
+                        <span class="vision-number">03</span>
+
+                        <h3>Hockey IQ</h3>
+
+                        <p>
+                            Interactive and augmented training experiences for
+                            pattern recognition, awareness and decision-making.
+                        </p>
+                    </article>
+
+                    <article class="vision-card">
+                        <span class="vision-number">04</span>
+
+                        <h3>Performance Analytics</h3>
+
+                        <p>
+                            Computer vision and footage analysis for individual
+                            development, review and strategic preparation.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="prototype">
+            <div class="section-inner">
+                <div class="section-heading">
+                    <p class="eyebrow">Current project</p>
+
+                    <h2>Autonomous hockey defenseman.</h2>
+
+                    <p>
+                        The first Stride prototype is an experimental robotic
+                        training partner designed to explore how technology can
+                        introduce more realistic defensive pressure into
+                        individual practice.
+                    </p>
+                </div>
+
+                <div class="prototype-layout">
+                    <article class="prototype-copy">
+                        <span class="prototype-label">In development</span>
+
+                        <h3>A robotic training partner that reacts.</h3>
+
+                        <p>
+                            The concept combines motion control, computer vision
+                            and intelligent decision-making to create a
+                            programmable defender. The goal is to test whether a
+                            responsive training aid can make solo drills more
+                            dynamic, repeatable and game-like.
+                        </p>
+                    </article>
+
+                    <aside class="prototype-panel">
+                        <h3>Prototype focus</h3>
+
+                        <div class="status-list">
+                            <div class="status-item">
+                                <span>Application</span>
+                                <span>On-ice skill training</span>
+                            </div>
+
+                            <div class="status-item">
+                                <span>Core technologies</span>
+                                <span>Robotics and vision</span>
+                            </div>
+
+                            <div class="status-item">
+                                <span>Current stage</span>
+                                <span>Early prototyping</span>
+                            </div>
+
+                            <div class="status-item">
+                                <span>Primary objective</span>
+                                <span>Learn and validate</span>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="research">
+            <div class="section-inner">
+                <div class="section-heading">
+                    <p class="eyebrow">Customer research</p>
+
+                    <h2>Help us understand how players really train.</h2>
+
+                    <p>
+                        We are speaking with players, coaches, trainers and
+                        hockey organizations to understand where current
+                        training methods work, where they fall short and which
+                        problems are genuinely worth solving.
+                    </p>
+                </div>
+
+                <div class="research-box">
+                    <div>
+                        <h3>Share your experience.</h3>
+
+                        <p>
+                            This is not a sales pitch. We are looking for honest
+                            conversations about training routines, frustrations,
+                            goals and the tools people already use.
+                        </p>
+                    </div>
+
+                    <a
+                        href="mailto:info@striderobotics.ca?subject=Stride%20Robotics%20Research%20Conversation"
+                        class="button button-primary"
+                    >
+                        Talk With Us
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="about">
+            <div class="section-inner about-layout">
+                <h2 class="about-title">
+                    Built by engineers who love hockey.
+                </h2>
+
+                <div class="about-copy">
+                    <p>
+                        Stride Robotics is an early-stage exploration into how
+                        intelligent technology could improve hockey training and
+                        player development.
+                    </p>
+
+                    <p>
+                        We are currently focused on prototyping,
+                        technical experimentation and customer discovery rather
+                        than presenting a finished product.
+                    </p>
+
+                    <p>
+                        The goal is simple: work closely with the hockey
+                        community, identify meaningful problems and build tools
+                        that make training more effective.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section contact-section" id="contact">
+            <div class="section-inner">
+                <div class="section-heading">
+                    <p class="eyebrow">Get involved</p>
+
+                    <h2>Interested in the future of hockey training?</h2>
+
+                    <p>
+                        We would like to hear from players, coaches, trainers,
+                        teams and anyone interested in helping shape what Stride
+                        builds next.
+                    </p>
+                </div>
+
+                <a
+                    href="mailto:info@striderobotics.ca"
+                    class="button button-primary"
+                >
+                    info@striderobotics.ca
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span>© 2026 Stride Robotics</span>
+        <span>Early-stage research and development</span>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll("main section");
+        const navLinks = document.querySelectorAll(".nav-links a");
+
+        function setActiveLink(sectionId) {
+            navLinks.forEach((link) => {
+                const isCurrent = link.getAttribute("href") === `#${sectionId}`;
+                link.classList.toggle("active", isCurrent);
+            });
+        }
+
+        function updateActiveLink() {
+            const navbar = document.querySelector(".navbar");
+            const navbarOffset = navbar.offsetHeight + 80;
+
+            let currentSection = "home";
+
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop - navbarOffset;
+
+                if (window.scrollY >= sectionTop) {
+                    currentSection = section.id;
+                }
+            });
+
+            const pageBottom =
+                window.innerHeight + window.scrollY >=
+                document.documentElement.scrollHeight - 5;
+
+            if (pageBottom) {
+                currentSection = sections[sections.length - 1].id;
+            }
+
+            setActiveLink(currentSection);
+        }
+
+        navLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+                const targetId = link.getAttribute("href").replace("#", "");
+                setActiveLink(targetId);
+            });
+        });
+
+        window.addEventListener("scroll", updateActiveLink, {
+            passive: true
+        });
+
+        window.addEventListener("resize", updateActiveLink);
+
+        updateActiveLink();
+    </script>
 </body>
 </html>
